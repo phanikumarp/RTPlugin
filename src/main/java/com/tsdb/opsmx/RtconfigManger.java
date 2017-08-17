@@ -40,22 +40,24 @@ private static final Logger logger = Logger.getLogger(RtconfigManger.class);
 	private void setDBValues() throws ConfigurationException {
 
 		try(InputStream inputstream = new FileInputStream(CONFIG_FILE); 
-				InputStreamReader reader = new InputStreamReader(inputstream)) {
+			InputStreamReader reader = new InputStreamReader(inputstream)) {
 			JSONObject data = (JSONObject) JSONValue.parseWithException(reader);
 			 json = (JSONArray) ((JSONObject) data).get("rtagent");
-			 
+	 
 			for (int i = 0; i < json.size(); i++) {
 				JSONObject obj = (JSONObject) json.get(i);
 				setOpsName((String) obj.get("ops_name"));
-			    
-				
+				//System.out.println(getOpsName());				
 			}
 		}catch (Exception e) {
 			logger.error("unable to find the configuration file parameters due to this Exception::"+e);
-			throw new ConfigurationException(
-					"'KairoDB_details' could not be found in the 'apachesettings.json' configuration file");
+			throw new ConfigurationException("'rtplugin.json' configuration file");
 		}
 	}
 
-	
+//	public static void main(String[] args) {
+//		RtconfigManger rt= new RtconfigManger();
+//		String Oname=rt.getOpsName();
+//		System.out.println(Oname);
+//	}
 }

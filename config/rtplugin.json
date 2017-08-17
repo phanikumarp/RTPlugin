@@ -1,7 +1,7 @@
 {
   "rtagent": [
     {
-      "ops_Name":"opsmx",
+      "ops_name":"opsmx",
       "host_ip":"localhost",
       "user":"root",  
     }

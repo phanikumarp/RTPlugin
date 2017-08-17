@@ -41,7 +41,7 @@ public class OpsmxPublisher extends RTPublisher {
 	private int opsmxPort;
 	private String[] opsmxIa_host;
 	private List<String> opsmxIp;
-	private String ops="opsmx";
+	private static String ops=null;
 
 	@Message
 	public static class MetricDataPoint {
@@ -55,7 +55,6 @@ public class OpsmxPublisher extends RTPublisher {
 		LOG.info("Init opsmxPublisher");
         RtconfigManger rts=new RtconfigManger();
         ops=rts.getOpsName();
-        
 		opsmxPort = tsdb.getConfig().getInt("tsd.plugin."+ops+".port");
 
 		opsmxIa_host = tsdb.getConfig().getString("tsd.plugin."+ops+".host").split(",");
@@ -67,8 +66,10 @@ public class OpsmxPublisher extends RTPublisher {
 
 		try {
 			udpSocket = new DatagramSocket();
+			LOG.info("Socket connected");
 		} catch (SocketException e) {
 			LOG.error("SocketException in "+ops+"Publisher initialize");
+			LOG.info("SocketException in "+ops+"Publisher initialize");
 		}
 	}
 
@@ -111,6 +112,7 @@ public class OpsmxPublisher extends RTPublisher {
 			  DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(opsmxIp.get(index)),
 						opsmxPort);
 				udpSocket.send(packet);
+				System.out.println("Data sending ...");
 			}
 		} catch (IOException e) {
 			LOG.error("IOException in "+ops+"Publisher send" +e);
@@ -142,9 +144,11 @@ public class OpsmxPublisher extends RTPublisher {
 				DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(opsmxIp.get(index)),
 						opsmxPort);
 				udpSocket.send(packet);
+				System.out.println("Data sending ...");
 			}
 		} catch (IOException e) {
 			LOG.error("IOException in "+ops+"Publisher send" +e);
+			LOG.info("SocketException in "+ops+"Publisher initialize");
 		}
 		return new Deferred<Object>();
 	}
